@@ -22,6 +22,7 @@ frontend/
  │   │   ├── main.tsx            # Punto de entrada
  │   │   ├── index.css           # Estilos globales
  │   │   ├── vite-env.d.ts       # Configuración de Vite
+ │   ├── .env.example            # Plantilla de variables de entorno
  │   ├── .gitignore              # Archivos a ignorar en Git
  │   ├── package.json            # Dependencias del proyecto
  │   ├── tsconfig.json           # Configuración de TypeScript
@@ -41,7 +42,9 @@ cd equipo-c23-59-webapp/frontend/visualizador-de-eventos
 ### 2️⃣ Instalar dependencias
 ```bash
 npm install
-```
+
+### 3️⃣ Configurar las variables de entorno
+VITE_API_URL=http://localhost:8080 o la url que este usando el back
 
 ### 3️⃣ Iniciar el servidor de desarrollo
 ```bash

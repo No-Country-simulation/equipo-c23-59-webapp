@@ -1,25 +1,20 @@
-import { BrowserRouter, createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Home from './view/Home';
-import Login from './view/Login';
 
-const browserRouter = createBrowserRouter([
-  {
-    path: '/',
-    element: <Home />,
-  },
-  {
-    path: '/login',
-    element: <Login />,
-  }
-  
-]);
+import { Route, Routes } from 'react-router-dom'
+import './App.css'
+import Home from './views/Home'
+import Login from './views/Login'
+
 function App() {
+
+
   return (
-    <BrowserRouter>
-      <RouterProvider router={browserRouter} />
-      
-    </BrowserRouter>
-  );
+    <>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/login' element={<Login />} />
+      </Routes>
+    </>
+  )
 }
 
-export default App;
+export default App
