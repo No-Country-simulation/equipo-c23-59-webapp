@@ -17,7 +17,7 @@ export default function Loginregistro() {
         apellido: "",
         email: "",
         password: "",
-        confirmPassword: "",
+        password2: "",
     });
 
     const [error, setError] = useState("");
@@ -26,7 +26,7 @@ export default function Loginregistro() {
         e.preventDefault();
         setError("");
 
-        if (formMode === "registro" && formData.password !== formData.confirmPassword) {
+        if (formMode === "registro" && formData.password !== formData.password2) {
             setError("Las contraseñas no coinciden");
             return;
         }
@@ -43,31 +43,37 @@ export default function Loginregistro() {
                 apellido: formData.apellido,
                 email: formData.email,
                 password: formData.password
-                
+
             };
-console.log("Enviando JSON:", JSON.stringify(body));
+            console.log("Enviando JSON:", JSON.stringify(body));
             const response = await fetch(endpoint, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(body)
-            })
-            const data = await response.json();
- console.log("Respuesta del servidor:", data);
+            });
+            
+        let data;
+        const contentType = response.headers.get("Content-Type");
+        if (contentType && contentType.includes("application/json")) {
+            data = await response.json();
+        } else {
+            data = await response.text();
+        }
+        console.log("Respuesta del servidor:", data);
 
-            if (!response.ok) {
-                throw new Error(data.message || "Error en la solicitud");
-            }
-
-            localStorage.setItem("token", data.token);
-            navigate("/home");
-        } catch (error: any) {
-            console.error("Error en la solicitud:", error);
-            setError(error.message || "Error inesperado");
+        if (!response.ok) {
+            throw new Error(typeof data === "string" ? data : (data.message || "Error en la solicitud"));
         }
 
+        localStorage.setItem("token", data.token);
+        navigate("/home");
+    } catch (error: any) {
+        console.error("Error en la solicitud:", error);
+        setError(error.message || "Error inesperado");
     }
+    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({
@@ -184,8 +190,8 @@ console.log("Enviando JSON:", JSON.stringify(body));
                             >
                                 <input
                                     type="password"
-                                    name="confirmPassword"
-                                    value={formData.confirmPassword}
+                                    name="password2"
+                                    value={formData.password2}
                                     onChange={handleChange}
                                     placeholder="CONFIRMAR CONTRASEÑA"
                                     className="w-full p-4 rounded-lg bg-white/10 border border-white/20 text-white 
