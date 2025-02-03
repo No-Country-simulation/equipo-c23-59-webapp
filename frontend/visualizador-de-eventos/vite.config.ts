@@ -11,8 +11,7 @@ export default defineConfig(({ mode }) => {
       proxy: {
         '/auth': {
           target: env.VITE_API_URL, // Ahora se usa `env.VITE_API_URL`
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/auth/, '')
+          changeOrigin: true
         }
       }
     }
