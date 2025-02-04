@@ -1,5 +1,6 @@
 package com.miseventospe.backend.servicios;
 
+import com.miseventospe.backend.dto.EventoListarActivosDTO;
 import com.miseventospe.backend.dto.EventoRegistroDTO;
 import com.miseventospe.backend.entidades.Evento;
 import com.miseventospe.backend.entidades.Usuario;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EventoServicio {
@@ -51,6 +54,29 @@ public class EventoServicio {
 
         eventoRepositorio.save(evento);
     }
+
+
+    @Transactional(readOnly = true)
+    public List<EventoListarActivosDTO> listarEventosActivos(){
+        List<Evento> eventos = eventoRepositorio.findByEstado(EstadoEvento.ACTIVO);
+        return eventos.stream()
+                .map(evento -> new EventoListarActivosDTO(
+                        evento.getTitulo(),
+                        evento.getDescripcion(),
+                        evento.getFecha(),
+                        evento.getHora(),
+                        evento.getUbicacion(),
+                        evento.getLatitud(),
+                        evento.getLongitud(),
+                        evento.getOrganizador().getNombre()+" "+evento.getOrganizador().getApellido(),
+                        evento.getCategoria(),
+                        evento.getEnlace(),
+                        evento.getPrecio()
+                ))
+                .collect(Collectors.toList());
+
+    }
+
 
     public void validar(String titulo, String descripcion, Date fecha, String hora,
                         String ubicacion, Double latitud, Double longitud,
