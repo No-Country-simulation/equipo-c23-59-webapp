@@ -1,0 +1,24 @@
+package com.miseventospe.backend.enumeraciones;
+
+public enum CategoriaEvento {
+    MUSICA,
+    DANZAS,
+    ENTRETENIMIENTO,
+    CULTURA,
+    DEPORTES,
+    TECNOLOGIA,
+    EDUCACION,
+    NEGOCIOS,
+    SALUD_Y_BIENESTAR,
+    GASTRONOMIA,
+    MODA_Y_BELLEZA,
+    CIENCIA,
+    CINE_Y_TEATRO,
+    POLITICA_Y_SOCIEDAD,
+    VOLUNTARIADO_Y_SOCIAL,
+    INFANTIL_Y_FAMILIAR,
+    RELIGION_Y_ESPIRITUALIDAD,
+    VIAJES_Y_TURISMO,
+    JUEGOS_Y_ESPORTS,
+    OTROS;
+}
