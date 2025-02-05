@@ -12,9 +12,15 @@ import com.miseventospe.backend.repositorios.UsuarioRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,8 +32,10 @@ public class EventoServicio {
     @Autowired
     private UsuarioRepositorio usuarioRepositorio;
 
+    private final String DIRECTORIO_IMAGENES = "src/main/resources/static/images/";
+
     @Transactional
-    public void registrarEvento(EventoRegistroDTO eventoRegistroDTO) throws MiExcepcion {
+    public void registrarEvento(EventoRegistroDTO eventoRegistroDTO, MultipartFile imagen) throws MiExcepcion, IOException {
 
         validar(eventoRegistroDTO.getTitulo(),eventoRegistroDTO.getDescripcion(),eventoRegistroDTO.getFecha(),eventoRegistroDTO.getHora(),
                 eventoRegistroDTO.getUbicacion(),eventoRegistroDTO.getLatitud(),eventoRegistroDTO.getLongitud(),eventoRegistroDTO.getCategoria(),
@@ -50,6 +58,15 @@ public class EventoServicio {
         evento.setEnlace(eventoRegistroDTO.getEnlace());
         evento.setPrecio(eventoRegistroDTO.getPrecio());
         evento.setEstado(EstadoEvento.ACTIVO);
+
+        if(imagen != null && !imagen.isEmpty()){
+            String nombreArchivo = UUID.randomUUID().toString() + "_" + imagen.getOriginalFilename();
+            Path rutaArchivo = Paths.get(DIRECTORIO_IMAGENES + nombreArchivo);
+            Files.createDirectories(rutaArchivo.getParent());
+            Files.write(rutaArchivo, imagen.getBytes());
+
+            evento.setImagenUrl("/images/"+nombreArchivo);
+        }
 
 
         eventoRepositorio.save(evento);
