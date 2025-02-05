@@ -62,6 +62,8 @@ public class Evento {
     @Column(nullable = false)
     private EstadoEvento estado;
 
+    private String imagenUrl;
+
     public String getId() {
         return id;
     }
@@ -172,5 +174,13 @@ public class Evento {
 
     public void setEstado(EstadoEvento estado) {
         this.estado = estado;
+    }
+
+    public String getImagenUrl() {
+        return imagenUrl;
+    }
+
+    public void setImagenUrl(String imagenUrl) {
+        this.imagenUrl = imagenUrl;
     }
 }
